@@ -1,0 +1,2 @@
+libs que instalei no projeto da pasta backend:
+npm install express multer mysql2 sequelize dotenv express csv-parse
