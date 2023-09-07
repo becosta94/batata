@@ -1,5 +1,5 @@
 const Product = require("../models/product.model");
-const ProoductsValidator = require("../services/products.validator")
+const Validator = require("../services/validator")
 
 // Retrieve all Tutorials from the database (with condition).
 exports.findAll = (req, res) => {
@@ -10,9 +10,7 @@ exports.findAll = (req, res) => {
         res.status(500).send({
           message:
             err.message || "Some error occurred while retrieving tutorials."
-        });
-
-        
+        });      
 
       res.send(data);
     });
@@ -46,16 +44,14 @@ exports.validate = (req, res) => {
       });
     }
     Product.findById(req.params.code, (err, data) => {
-      
+      Validator.validate(req.params.sales_price, data, (valid) => {
+        if (!valid){
+          res.status(400).send({
+            message: "Sales price invalidated"
+          }); 
+        }else res.send(data);
+      })
     })
-    let Product = Product.findById(req.params.code);
-    if (ProoductsValidator.validate(req.params.code, req.params.sales_price, Product)){
-      res.status(400).send({
-        message: "Sales price invalidated"
-      });
-    }
-  
-    console.log(req.body);
   
     // Product.updateById(
     //   req.params.code,
